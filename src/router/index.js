@@ -3,18 +3,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store'
 
 import Home from '../views/Home.vue'
-
-import Product from '../views/Product.vue'
-import Category from '../views/Category.vue'
 import Search from '../views/Search.vue'
-import Cart from '../views/Cart.vue'
-import SignUp from '../views/SignUp.vue'
-import LogIn from '../views/LogIn.vue'
-import MyAccount from '../views/MyAccount.vue'
-import Checkout from '../views/Checkout.vue'
-import Success from '../views/Success.vue'
+import FormAddPlayer from '../views/FormAddPlayer.vue'
+import Club from '../views/Club.vue'
+import Player from '../views/Player.vue'
 
 const routes = [
+  {
+    path: '/player',
+    name: 'Player',
+    component: Player,
+    props:true
+  },
   {
     path: '/',
     name: 'Home',
@@ -29,55 +29,19 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/sign-up',
-    name: 'SignUp',
-    component: SignUp
+    path: '/form-add',
+    name: 'FormAddPlayer',
+    component: FormAddPlayer
   },
   {
-    path: '/log-in',
-    name: 'LogIn',
-    component: LogIn
-  },
-  {
-    path: '/my-account',
-    name: 'MyAccount',
-    component: MyAccount,
-    meta: {
-        requireLogin: true
-    }
+    path: '/club',
+    name: 'Club',
+    component: Club
   },
   {
     path: '/search',
     name: 'Search',
     component: Search
-  },
-  {
-    path: '/cart',
-    name: 'Cart',
-    component: Cart
-  },
-  {
-    path: '/cart/success',
-    name: 'Success',
-    component: Success
-  },
-  {
-    path: '/cart/checkout',
-    name: 'Checkout',
-    component: Checkout,
-    meta: {
-        requireLogin: true
-    }
-  },
-  {
-    path: '/:category_slug/:product_slug',
-    name: 'Product',
-    component: Product
-  },
-  {
-    path: '/:category_slug',
-    name: 'Category',
-    component: Category
   }
 ]
 
@@ -87,8 +51,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
-    next({ name: 'LogIn', query: { to: to.path } });
+  if (to.matched.some(record => record.meta.requireClub) && !store.state.isAuthenticated) {
+    next({ name: 'Club', query: { to: to.path } });
   } else {
     next()
   }
